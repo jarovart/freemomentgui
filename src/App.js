@@ -4,13 +4,13 @@ import Hello from "./Hello";
 function App() {
   return (
     <div>
-      <Hello />
+      <Hello name="Max" />
+      <Hello name="Sara" />
     </div>
   );
 }
 
 export default App;
-
 
 
 
