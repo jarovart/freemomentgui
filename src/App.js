@@ -1,4 +1,20 @@
-import logo from './logo.svg';
+import React from "react";
+import Hello from "./Hello";
+
+function App() {
+  return (
+    <div>
+      <Hello />
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+/*import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -22,4 +38,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/
