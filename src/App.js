@@ -5,8 +5,8 @@ import Counter from "./Counter";
 function App() {
   return (
     <div>
-      <Hello name="Max" />
-      <Hello name="Sara" />
+      <Hello firstNameEmptyValue="Max" secondNameEmptyValue="asda"/>
+      <Hello  />
       <Counter />
     </div>
   );

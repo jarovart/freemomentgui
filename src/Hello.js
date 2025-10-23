@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 
-function Hello() {
-  const [name, setName] = useState("");
-
-  // Event-Handler für Eingabe
-  function handleChange(event) {
-    setName(event.target.value);
-  }
+function Hello({firstNameEmptyValue ="...", secondNameEmptyValue= "..."}) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   return (
     <div style={{ margin: "20px" }}>
       <input
         type="text"
-        placeholder="Gib deinen Namen ein"
-        value={name}
-        onChange={handleChange}
+        placeholder="Vorname"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
         style={{ padding: "5px", marginRight: "10px" }}
       />
-      <p>Hallo {name ? name : "..."}</p>
+      <input
+        type="text"
+        placeholder="Nachname"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        style={{ padding: "5px", marginRight: "10px" }}
+      />
+      <p>
+        Hallo {firstName || firstNameEmptyValue} {lastName || secondNameEmptyValue} 👋
+      </p>
     </div>
   );
 }
