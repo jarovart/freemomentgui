@@ -37,7 +37,7 @@ function LocationApp() {
     { value: 3, label: "1 Monat" },
   ];
 
-  const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
+  //const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
 
   return (
     <Box sx={{ height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`, position: "relative" }}>
@@ -85,7 +85,6 @@ function LocationApp() {
           transform: 'translateX(-50%)',
           height: '10%',
           backgroundColor: 'rgba(143, 143, 143, 0.7)',
-          borderRadius: "2px",
           display: 'inline-flex',
           alignItems: 'center',
           gap: "10px",
