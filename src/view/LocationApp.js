@@ -37,7 +37,7 @@ function LocationApp() {
     { value: 3, label: "1 Monat" },
   ];
 
-  //const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
+  const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
 
   return (
     <Box sx={{ height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`, position: "relative" }}>
@@ -58,7 +58,8 @@ function LocationApp() {
         top: `10px`,          // 10px unter Toolbar
         left: "50%",
         transform: "translateX(-50%)",
-        //minWidth: "300px", // Lesbarkeit
+        minWidth: "200px", // Lesbarkeit
+        width: "30%",
         zIndex: 1001,
         backgroundColor: 'rgba(143, 143, 143, 0.7)',
         borderRadius: "12px",
@@ -71,7 +72,7 @@ function LocationApp() {
           placeholder="Ort eingeben"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{ padding: '5px', width: '60%', marginRight: '10px' }}
+          style={{ padding: '5px', width: '100%', marginRight: '10px' }}
         />
         <button onClick={addLocation}>Hinzufügen</button>
       </Box>
@@ -88,11 +89,13 @@ function LocationApp() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: "10px",
-          width: "fit-content",
-          minWidth: "400px", // Lesbarkeit
+          width: "30%",
+          minWidth: "100px", // Lesbarkeit
+          minHeight: "70px", // Lesbarkeit
           borderRadius: "12px",   // oder 8, 16 – Geschmackssache
           zIndex: 1000,   // ✅ das ist neu!
-          padding: "6px 30px"
+          padding: "6px 30px",
+          whiteSpace: "nowrap"
         }}
       >
         <Slider
