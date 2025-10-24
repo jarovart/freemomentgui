@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from "leaflet";
+import Slider from "@mui/material/Slider";
+import Box from "@mui/material/Box";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+const TOOLBAR_HEIGHT = 64; // px
 
 // Marker Fix
 delete L.Icon.Default.prototype._getIconUrl;
@@ -16,7 +20,7 @@ L.Icon.Default.mergeOptions({
 function LocationApp() {
   const [locations, setLocations] = useState([]);
   const [input, setInput] = useState("");
-  const toolbarHeight = 64; // Material UI Standard
+  const [dateFilter, setDateFilter] = useState(0);
 
   const addLocation = () => {
     if (!input.trim()) return;
@@ -26,12 +30,21 @@ function LocationApp() {
     setInput("");
   };
 
+    const marks = [
+    { value: 0, label: 'Heute' },
+    { value: 1, label: 'Morgen' },
+    { value: 2, label: '1 Woche' },
+    { value: 3, label: "1 Monat" },
+  ];
+
+  const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
+
   return (
-    <div style={{ height: `calc(100vh - ${toolbarHeight}px)` }}>
+    <Box sx={{ height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`, position: "relative" }}>
       <MapContainer
         center={[52.52, 13.405]}
         zoom={10}
-        className="fullscreen-map"
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {locations.map((loc, index) => (
@@ -40,7 +53,61 @@ function LocationApp() {
           </Marker>
         ))}
       </MapContainer>
-    </div>
+      <Box sx={{
+        position: "absolute",
+        top: `10px`,          // 10px unter Toolbar
+        left: "50%",
+        transform: "translateX(-50%)",
+        //minWidth: "300px", // Lesbarkeit
+        zIndex: 1001,
+        backgroundColor: 'rgba(143, 143, 143, 0.7)',
+        borderRadius: "12px",
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "6px 10px"
+      }}>
+        <input
+          type="text"
+          placeholder="Ort eingeben"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          style={{ padding: '5px', width: '60%', marginRight: '10px' }}
+        />
+        <button onClick={addLocation}>Hinzufügen</button>
+      </Box>
+
+      {/* Overlay: Slider unten */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '10px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          height: '10%',
+          backgroundColor: 'rgba(143, 143, 143, 0.7)',
+          borderRadius: "2px",
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: "10px",
+          width: "fit-content",
+          minWidth: "400px", // Lesbarkeit
+          borderRadius: "12px",   // oder 8, 16 – Geschmackssache
+          zIndex: 1000,   // ✅ das ist neu!
+          padding: "6px 30px"
+        }}
+      >
+        <Slider
+          value={dateFilter}
+          min={0}
+          max={3}
+          step={1}
+          marks={marks}
+          onChange={(_, newValue) => setDateFilter(newValue)}
+          valueLabelDisplay="off"
+          //sx={{ left: '10%', width: '80%' }}
+        />
+      </Box>
+    </Box>
   );
 }
 
