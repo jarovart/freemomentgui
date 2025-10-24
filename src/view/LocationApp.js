@@ -16,6 +16,7 @@ L.Icon.Default.mergeOptions({
 function LocationApp() {
   const [locations, setLocations] = useState([]);
   const [input, setInput] = useState("");
+  const toolbarHeight = 64; // Material UI Standard
 
   const addLocation = () => {
     if (!input.trim()) return;
@@ -26,31 +27,12 @@ function LocationApp() {
   };
 
   return (
-    <div style={{ margin: "20px" }}>
-      <h1>Test</h1>
-      <h2>Meine Locations</h2>
-      <p>Die Karte sollte unten sichtbar sein 👇</p>
-
-      <input
-        type="text"
-        placeholder="Ort eingeben"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        style={{ padding: "5px", marginRight: "10px" }}
-      />
-      <button onClick={addLocation}>Hinzufügen</button>
-
+    <div style={{ height: `calc(100vh - ${toolbarHeight}px)` }}>
       <MapContainer
         center={[52.52, 13.405]}
         zoom={10}
-        style={{ height: "400px", width: "100%", marginTop: "20px" }}
-        whenCreated={(map) => {
-          setTimeout(() => {
-            map.invalidateSize();
-          }, 0);
-        }}
+        className="fullscreen-map"
       >
-
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {locations.map((loc, index) => (
           <Marker key={index} position={[loc.lat, loc.lng]}>

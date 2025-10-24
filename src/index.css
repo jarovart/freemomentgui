@@ -12,9 +12,16 @@ code {
     monospace;
 }
 
+/* index.css oder App.css */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
+.fullscreen-map {
+  height: calc(100vh - 64px); /* Toolbar Höhe abziehen */
+  width: 100%;
+}
+
 
