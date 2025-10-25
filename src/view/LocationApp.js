@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useNavigate, useLocation } from "react-router-dom";
 import LocationDateSlider from "../templates/LocationDateSlider";
 import L from "leaflet";
 import Slider from "@mui/material/Slider";
@@ -10,6 +11,24 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 const TOOLBAR_HEIGHT = 64; // px
 
+function useLongPress(callback = () => {}, ms = 500) {
+  const timeout = useRef();
+
+  const start = (e) => {
+    timeout.current = setTimeout(() => callback(e), ms);
+  };
+
+  const clear = () => clearTimeout(timeout.current);
+
+  return {
+    onMouseDown: start,
+    onTouchStart: start,
+    onMouseUp: clear,
+    onMouseLeave: clear,
+    onTouchEnd: clear,
+  };
+}
+
 // Marker Fix
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -19,6 +38,8 @@ L.Icon.Default.mergeOptions({
 });
 
 function LocationApp() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [locations, setLocations] = useState([]);
   const [input, setInput] = useState("");
   const [dateFilter, setDateFilter] = useState(0);
@@ -39,10 +60,21 @@ function LocationApp() {
   ];
 
   const filteredLocations = locations.filter(loc => loc.dateFilter === dateFilter);
+  const handleLongPress = (event) => {
+    const { lat, lng } = event.latlng;
+    console.log("LONG PRESS:", lat, lng);
+
+    navigate("/createlocationpage", {
+      state: { lat, lng }
+    });
+  };
+
+  const longpress = useLongPress(handleLongPress, 600);
 
   return (
     <Box sx={{ height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`, position: "relative" }}>
       <MapContainer
+        {...longpress}
         center={[52.52, 13.405]}
         zoom={10}
         style={{ height: "100%", width: "100%" }}

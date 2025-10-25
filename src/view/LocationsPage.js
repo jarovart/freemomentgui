@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Grid, Box } from "@mui/material";
 import { LayoutSwitcher } from "../templates/LayoutSwitcher"
 import { LocationCard } from "../templates/LocationCard";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 
 const locations1 = [
   {
@@ -34,10 +36,58 @@ const locations1 = [
   }
 ];
 
-
 export default function LocationsPage({ locations=locations1 }) {
-  const [view, setView] = useState(2); // default: 2 pro Reihe
+  const navigate = useNavigate();
 
+  const openLocation = (id) => {
+    navigate(`/location/${id}`);
+  };
+
+  return (
+    <Box
+      sx={{
+        height: `calc(100vh - 64px)`,   // Toolbar offset ggf. anpassen
+        overflowY: "auto",
+        padding: 2,
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gap: 2,
+      }}
+    >
+      {locations.map((loc) => (
+        <Card
+          key={loc.id}
+          sx={{ maxHeight: 220 }}
+          onClick={() => openLocation(loc.id)}
+        >
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              height="120"
+              image={loc.image}
+              alt={loc.name}
+            />
+            <CardContent sx={{ padding: "8px" }}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                {loc.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {loc.address}
+              </Typography>
+              <Typography variant="caption" color="secondary">
+                {loc.date}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      ))}
+    </Box>
+  );
+}
+
+
+/*export default function LocationsPage({ locations=locations1 }) {
+  const [view, setView] = useState(2); // default: 2 pro Reihe
   const openLocation = (loc) => {
     console.log("Open details:", loc);
     // navigate(`/location/${loc.id}`)
@@ -63,4 +113,4 @@ export default function LocationsPage({ locations=locations1 }) {
 
     </Box>
   );
-}
+}*/
