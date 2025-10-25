@@ -78,6 +78,9 @@ export default function CustomToolbar({ user, setUser }) {
               <ListItem button onClick={() => navigate("/profile")}>
                 <ListItemText primary="Profil" />
               </ListItem>
+              <ListItem button onClick={() => navigate("/locationspage")}>
+                <ListItemText primary="LocationPage" />
+              </ListItem>
             </List>
           </Box>
         </Drawer>

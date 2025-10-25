@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LocationApp from "./view/LocationApp";
 import CustomToolbar from "./view/Toolbar";
 import Profile from "./view/Profile";
+import LocationsPage from "./view/LocationsPage";
+import LocationDetails from "./view/LocationDetails";
 import reportWebVitals from './reportWebVitals';
 
 import 'leaflet/dist/leaflet.css';
@@ -21,6 +23,8 @@ function Root() {
         <Routes>
           <Route path="/" element={<LocationApp />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/locationspage" element={<LocationsPage />} />
+          <Route path="/location/:id" element={<LocationDetails />} />
         </Routes>
       </React.StrictMode>
     </BrowserRouter>
