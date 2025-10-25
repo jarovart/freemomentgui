@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import LocationDateSlider from "../templates/LocationDateSlider";
 import L from "leaflet";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
@@ -76,9 +77,9 @@ function LocationApp() {
         />
         <button onClick={addLocation}>Hinzufügen</button>
       </Box>
-
+      <LocationDateSlider />
       {/* Overlay: Slider unten */}
-      <Box
+      {/*<Box
         sx={{
           position: 'absolute',
           bottom: '10px',
@@ -108,7 +109,7 @@ function LocationApp() {
           valueLabelDisplay="off"
           //sx={{ left: '10%', width: '80%' }}
         />
-      </Box>
+      </Box>*/}
     </Box>
   );
 }
