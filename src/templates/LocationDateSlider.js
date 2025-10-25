@@ -40,7 +40,7 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
     height: 3,
   },
   '& .MuiSlider-rail': {
-    color: '#d8d8d8',
+    color: '#8f8e8eff',
     opacity: 1,
     height: 3,
     ...theme.applyStyles('dark', {
