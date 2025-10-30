@@ -19,8 +19,8 @@ function Root() {
   return (
     <BrowserRouter>
       {/* Toolbar immer sichtbar */}
-      <CustomToolbar user={user} setUser={setUser} />
       <React.StrictMode>
+        <CustomToolbar  user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<LocationApp />} />
           <Route path="/profile" element={<Profile />} />

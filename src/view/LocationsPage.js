@@ -47,40 +47,235 @@ export default function LocationsPage({ locations=locations1 }) {
     <Box
       sx={{
         height: `calc(100vh - 64px)`,   // Toolbar offset ggf. anpassen
-        overflowY: "auto",
-        padding: 2,
         display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
+        alignItems: "flex-start",   // Text oben am Bild ausrichten
+        backgroundColor: 'rgba(143, 143, 143, 0.7)',
+        padding: 2,
+        gridTemplateColumns: "repeat(2, fr)",
+        gridAutoRows: "auto",
         gap: 2,
       }}
     >
-      {locations.map((loc) => (
-        <Card
-          key={loc.id}
-          sx={{ maxHeight: 220 }}
-          onClick={() => openLocation(loc.id)}
-        >
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="120"
-              image={loc.image}
-              alt={loc.name}
-            />
-            <CardContent sx={{ padding: "8px" }}>
-              <Typography variant="subtitle1" fontWeight="bold">
-                {loc.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {loc.address}
-              </Typography>
-              <Typography variant="caption" color="secondary">
-                {loc.date}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      ))}
+      <Box
+        style={{
+          display: "flex",            // ordnet Bild und Text nebeneinander
+          alignItems: "flex-start",   // Text oben am Bild ausrichten
+          backgroundColor: "#f9f9f9",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "15px",
+      }}
+    >
+      {/* Bild links */}
+      <img
+        src="../../logo192.png"
+        alt="Bremen"
+        style={{
+          width: "120px",
+          height: "auto",
+          borderRadius: "8px",
+          marginRight: "15px", // Abstand zwischen Bild und Text
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Texte rechts */}
+      <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          flex: 1,              // <-- passt sich an Parent-Größe an
+          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
+          whiteSpace: "nowrap",      // kein Zeilenumbruch
+          overflow: "hidden",         // überlaufenden Text verstecken
+        }}>
+        <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+        </h2>
+        <p style={{ margin: 0, color: "#555" }}>
+          Berühmtes Wahrzeichen der Stadt Bremen.
+        </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
+          Geöffnet: täglich von 9–18 Uhr
+        </p>
+      </div>
+      
+      </Box>
+      <Box
+        style={{
+          display: "flex",            // ordnet Bild und Text nebeneinander
+          alignItems: "flex-start",   // Text oben am Bild ausrichten
+          backgroundColor: "#f9f9f9",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "15px",
+      }}
+    >
+      {/* Bild links */}
+      <img
+        src="../../logo192.png"
+        alt="Bremen"
+        style={{
+          width: "120px",
+          height: "auto",
+          borderRadius: "8px",
+          marginRight: "15px", // Abstand zwischen Bild und Text
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Texte rechts */}
+      <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          flex: 1,              // <-- passt sich an Parent-Größe an
+          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
+          whiteSpace: "nowrap",      // kein Zeilenumbruch
+          overflow: "hidden",         // überlaufenden Text verstecken
+        }}>
+        <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+        </h2>
+        <p style={{ margin: 0, color: "#555" }}>
+          Berühmtes Wahrzeichen der Stadt Bremen.
+        </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
+          Geöffnet: täglich von 9–18 Uhr
+        </p>
+      </div>
+      
+      </Box>
+      <Box
+        style={{
+          display: "flex",            // ordnet Bild und Text nebeneinander
+          alignItems: "flex-start",   // Text oben am Bild ausrichten
+          backgroundColor: "#f9f9f9",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "15px",
+      }}
+    >
+      {/* Bild links */}
+      <img
+        src="../../logo192.png"
+        alt="Bremen"
+        style={{
+          width: "120px",
+          height: "auto",
+          borderRadius: "8px",
+          marginRight: "15px", // Abstand zwischen Bild und Text
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Texte rechts */}
+      <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          flex: 1,              // <-- passt sich an Parent-Größe an
+          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
+          whiteSpace: "nowrap",      // kein Zeilenumbruch
+          overflow: "hidden",         // überlaufenden Text verstecken
+        }}>
+        <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+        </h2>
+        <p style={{ margin: 0, color: "#555" }}>
+          Berühmtes Wahrzeichen der Stadt Bremen.
+        </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
+          Geöffnet: täglich von 9–18 Uhr
+        </p>
+      </div>
+      
+      </Box>
+      <Box
+        style={{
+          display: "flex",            // ordnet Bild und Text nebeneinander
+          alignItems: "flex-start",   // Text oben am Bild ausrichten
+          backgroundColor: "#f9f9f9",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "15px",
+      }}
+    >
+      {/* Bild links */}
+      <img
+        src="../../logo192.png"
+        alt="Bremen"
+        style={{
+          width: "120px",
+          height: "auto",
+          borderRadius: "8px",
+          marginRight: "15px", // Abstand zwischen Bild und Text
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Texte rechts */}
+      <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          flex: 1,              // <-- passt sich an Parent-Größe an
+          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
+          whiteSpace: "nowrap",      // kein Zeilenumbruch
+          overflow: "hidden",         // überlaufenden Text verstecken
+        }}>
+        <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+        </h2>
+        <p style={{ margin: 0, color: "#555" }}>
+          Berühmtes Wahrzeichen der Stadt Bremen.
+        </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
+          Geöffnet: täglich von 9–18 Uhr
+        </p>
+      </div>
+      
+      </Box>
+      <Box
+        style={{
+          display: "flex",            // ordnet Bild und Text nebeneinander
+          alignItems: "flex-start",   // Text oben am Bild ausrichten
+          backgroundColor: "#f9f9f9",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          padding: "15px",
+      }}
+    >
+      {/* Bild links */}
+      <img
+        src="../../logo192.png"
+        alt="Bremen"
+        style={{
+          width: "120px",
+          height: "auto",
+          borderRadius: "8px",
+          marginRight: "15px", // Abstand zwischen Bild und Text
+          objectFit: "cover",
+        }}
+      />
+
+      {/* Texte rechts */}
+      <div style={{ 
+          display: "flex", 
+          flexDirection: "column", 
+          flex: 1,              // <-- passt sich an Parent-Größe an
+          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
+          whiteSpace: "nowrap",      // kein Zeilenumbruch
+          overflow: "hidden",         // überlaufenden Text verstecken
+        }}>
+        <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+        </h2>
+        <p style={{ margin: 0, color: "#555" }}>
+          Berühmtes Wahrzeichen der Stadt Bremen.
+        </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
+          Geöffnet: täglich von 9–18 Uhr
+        </p>
+      </div>
+      
+      </Box>
     </Box>
   );
 }
