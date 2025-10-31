@@ -83,7 +83,6 @@ export default function LocationDateSlider() {
         m: 3,
           zIndex: 1000,   
         }} />
-      <Typography gutterBottom>Airbnb</Typography>
       <AirbnbSlider
         slots={{ thumb: AirbnbThumbComponent }}
         getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
