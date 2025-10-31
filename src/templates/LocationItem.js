@@ -3,13 +3,13 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@
 export function LocationItem({ location, onClick }) {
   return (
     <Box
-        style={{
+        sx={{
           display: "flex",            // ordnet Bild und Text nebeneinander
-          alignItems: "flex-start",   // Text oben am Bild ausrichten
           backgroundColor: "#f9f9f9",
           border: "1px solid #ddd",
           borderRadius: "10px",
           padding: "15px",
+          margin: 2
       }}
     >
       {/* Bild links */}
@@ -21,16 +21,14 @@ export function LocationItem({ location, onClick }) {
           height: "auto",
           borderRadius: "8px",
           marginRight: "15px", // Abstand zwischen Bild und Text
-          //objectFit: "cover",
+          objectFit: "cover",
         }}
       />
 
       {/* Texte rechts */}
         <div style={{ 
-          display: "flex", 
           flexDirection: "column", 
           flex: 1,              // <-- passt sich an Parent-Größe an
-          justifyContent: "space-between", // verteilt Text gleichmäßig vertikal
           whiteSpace: "nowrap",      // kein Zeilenumbruch
           overflow: "hidden",         // überlaufenden Text verstecken
         }}>

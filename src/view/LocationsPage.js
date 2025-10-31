@@ -47,16 +47,17 @@ export default function LocationsPage({ locations=locations1 }) {
   return (
     <Box
       sx={{
-        height: `calc(100vh - 64px)`,   // Toolbar offset ggf. anpassen
-        display: "grid",
-        alignItems: "flex-start",   // Text oben am Bild ausrichten
+        height: `calc(100vh - 64px)`,
         backgroundColor: 'rgba(143, 143, 143, 0.7)',
-        padding: 2,
-        gridTemplateColumns: "repeat(2, fr)",
-        gridAutoRows: "auto",
-        gap: 2,
+        overflowY: "auto",
+        overflow: "auto",
       }}
     >
+      <LocationItem />
+      <LocationItem />
+      <LocationItem />
+      <LocationItem />
+      <LocationItem />
       <LocationItem />
     </Box>
   );
