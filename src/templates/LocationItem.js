@@ -1,8 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 
 export function LocationItem({ location, onClick }) {
+  const navigate = useNavigate();
+
+  const handleClick = (location) => {
+    navigate(`/location/${location.id}`, { state: location });
+  };
+
   return (
     <Box
+        key={location.id}
+        onClick={() => handleClick(location)}
         sx={{
           display: "flex",            // ordnet Bild und Text nebeneinander
           backgroundColor: "#f9f9f9",
@@ -33,13 +42,13 @@ export function LocationItem({ location, onClick }) {
           overflow: "hidden",         // überlaufenden Text verstecken
         }}>
         <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-          Bremer Stadtmusikanten asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234
+          {location.name}
         </h2>
         <p style={{ margin: 0, color: "#555" }}>
-          Berühmtes Wahrzeichen der Stadt Bremen.
+          {location.address}
         </p>
         <p style={{ margin: 0, fontSize: "14px", color: "#777" }}>
-          Geöffnet: täglich von 9–18 Uhr
+          {location.date}
         </p>
       </div>
       </Box>

@@ -53,12 +53,9 @@ export default function LocationsPage({ locations=locations1 }) {
         overflow: "auto",
       }}
     >
-      <LocationItem />
-      <LocationItem />
-      <LocationItem />
-      <LocationItem />
-      <LocationItem />
-      <LocationItem />
+      {locations.map((location, index) => (
+      <LocationItem location={location}/>
+      ))}
     </Box>
   );
 }
