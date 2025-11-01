@@ -72,7 +72,10 @@ export default function CustomToolbar({ user, setUser }) {
         <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
           <Box sx={{ width: 250 }} role="presentation">
             <List>
-              <ListItem button onClick={() => navigate("/")}>
+              <ListItem button onClick={() => {
+                setDrawerOpen(false);
+                navigate("/");
+              }}>
                 <ListItemText primary="Home" />
               </ListItem>
               <ListItem button onClick={() => navigate("/profile")}>
