@@ -11,35 +11,47 @@ const locations1 = [
     id: 1,
     name: "Marienplatz",
     address: "Marienplatz 1, München",
-    date: "2025-04-22",
+    date: "2025-04-22T00:00:00",
     image: "/images/marienplatz.jpg"
   },
   {
     id: 2,
     name: "Brandenburger Tor",
     address: "Pariser Platz, Berlin",
-    date: "2025-05-01",
+    date: "2025-05-01T00:00:00",
     image: "/images/brandenburger.jpg"
   },  
   {
     id: 3,
     name: "Marienplatz1",
     address: "Marienplatz 1, München",
-    date: "2025-04-22",
+    date: "2025-04-22T00:00:00",
     image: "/images/marienplatz.jpg"
   },
   {
     id: 4,
     name: "Brandenburger Tor1",
     address: "Pariser Platz, Berlin",
-    date: "2025-05-01",
-    image: "/images/brandenburger.jpg"
+    date: "2025-05-01T00:00:00",
+    imageUrl: "/images/brandenburger.jpg"
   }
 ];
 
 export default function LocationsPage({ locations=locations1 }) {
   const navigate = useNavigate();
-
+  console.debug("Erfolgreich gespeichert:");
+  fetch("http://localhost:8080/api/locations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(locations1.at(0))
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Server-Fehler " + res.status);
+    return res.json();
+  })
+  .then(data => console.log("✅ Erfolgreich gespeichert:", data))
+  .catch(err => console.error("❌ Fehler:", err));
+  
   const openLocation = (id) => {
     navigate(`/location/${id}`);
   };
