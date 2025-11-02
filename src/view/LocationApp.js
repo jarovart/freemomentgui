@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { useNavigate, useLocation } from "react-router-dom";
 import LocationDateSlider from "../templates/LocationDateSlider";
 import L from "leaflet";
@@ -36,6 +36,34 @@ L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
 });
+
+function MapWithLongClick() {
+  const navigate = useNavigate();
+  const clickTimeout = useRef(null);
+  const longPressDuration = 600; // ms (wie lange gedrückt halten = Long Click)
+
+  // Custom Hook für Map Events
+  useMapEvents({
+    mousedown(e) {
+      // Timer starten
+      clickTimeout.current = setTimeout(() => {
+        const { lat, lng } = e.latlng;
+        console.log("Long click bei:", lat, lng);
+        navigate(`/createlocationpage?lat=${lat}&lng=${lng}`);
+      }, longPressDuration);
+    },
+    mouseup() {
+      // Wenn man vorzeitig loslässt → kein Long Click
+      clearTimeout(clickTimeout.current);
+    },
+    mouseout() {
+      // Wenn Maus die Karte verlässt → abbrechen
+      clearTimeout(clickTimeout.current);
+    },
+  });
+
+  return null;
+}
 
 function LocationApp() {
   const navigate = useNavigate();
@@ -85,6 +113,7 @@ function LocationApp() {
             <Popup>{loc.name}</Popup>
           </Marker>
         ))}
+         <MapWithLongClick />
       </MapContainer>
       <Box sx={{
         position: "absolute",
