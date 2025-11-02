@@ -42,15 +42,19 @@ function MapWithLongClick() {
   const clickTimeout = useRef(null);
   const longPressDuration = 600; // ms (wie lange gedrückt halten = Long Click)
 
+  function startListening(e){
+    return setTimeout(() => {
+          const { lat, lng } = e.latlng;
+          console.log("Long click bei:", lat, lng);
+          navigate(`/createlocationpage?lat=${lat}&lng=${lng}`);
+        }, longPressDuration);
+  }
+
   // Custom Hook für Map Events
   useMapEvents({
     mousedown(e) {
       // Timer starten
-      clickTimeout.current = setTimeout(() => {
-        const { lat, lng } = e.latlng;
-        console.log("Long click bei:", lat, lng);
-        navigate(`/createlocationpage?lat=${lat}&lng=${lng}`);
-      }, longPressDuration);
+      clickTimeout.current = startListening(e);
     },
     mouseup() {
       // Wenn man vorzeitig loslässt → kein Long Click
@@ -60,6 +64,18 @@ function MapWithLongClick() {
       // Wenn Maus die Karte verlässt → abbrechen
       clearTimeout(clickTimeout.current);
     },
+    mousemove(){
+      clearTimeout(clickTimeout.current);
+    },
+    touchstart(e) {
+      clickTimeout.current = startListening(e);
+    },
+    touchMove(){
+      clearTimeout(clickTimeout.current);
+    },
+    touchend(){
+      clearTimeout(clickTimeout.current);
+    }
   });
 
   return null;
