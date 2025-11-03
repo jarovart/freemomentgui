@@ -92,7 +92,7 @@ function LocationApp() {
     if (!input.trim()) return;
     const lat = 52.52 + Math.random() * 0.01;
     const lng = 13.405 + Math.random() * 0.01;
-    setLocations([...locations, { name: input, lat, lng }]);
+    setLocations([...locations, { name: input, latitude: lat, longitude: lng }]);
     setInput("");
   };
 
@@ -113,6 +113,31 @@ function LocationApp() {
     });
   };
 
+    function MapEventHandler() {
+    const map = useMapEvents({
+      moveend: async () => {
+        const bounds = map.getBounds();
+
+        const southWest = bounds.getSouthWest();
+        const northEast = bounds.getNorthEast();
+
+        // Anfrage an Spring Boot senden
+        const response = await fetch(
+          `http://localhost:8080/api/locations/within?minLat=${southWest.lat}&maxLat=${northEast.lat}&minLng=${southWest.lng}&maxLng=${northEast.lng}`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data);
+        } else {
+          console.error("Fehler beim Laden der Locations");
+        }
+      },
+    });
+
+    return null;
+  }
+
   const longpress = useLongPress(handleLongPress, 600);
 
   return (
@@ -125,11 +150,12 @@ function LocationApp() {
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {locations.map((loc, index) => (
-          <Marker key={index} position={[loc.lat, loc.lng]}>
+          <Marker key={index} position={[loc.latitude, loc.longitude]}>
             <Popup>{loc.name}</Popup>
           </Marker>
         ))}
          <MapWithLongClick />
+         <MapEventHandler />
       </MapContainer>
       <Box sx={{
         position: "absolute",
