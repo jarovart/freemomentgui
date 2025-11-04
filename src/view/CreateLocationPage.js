@@ -5,7 +5,7 @@ export default function CreateLocationPage() {
   const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
   const latitude = query.get("lat");
-  const longtitude = query.get("lng");
+  const longitude = query.get("lng");
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -13,7 +13,7 @@ export default function CreateLocationPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const location = {name, description, date, latitude, longtitude };
+    const location = {name, description, date, latitude, longitude };
 
     const response = await fetch("http://localhost:8080/api/locations", {
       method: "POST",
@@ -34,7 +34,7 @@ export default function CreateLocationPage() {
     <div style={{ padding: "20px" }}>
       <h2>Neue Location erstellen</h2>
       <p>
-        Koordinaten: <b>{latitude}</b>, <b>{longtitude}</b>
+        Koordinaten: <b>{latitude}</b>, <b>{longitude}</b>
       </p>
       <form onSubmit={handleSubmit}>
         <input
