@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { useNavigate, useLocation } from "react-router-dom";
 import LocationDateSlider from "../templates/LocationDateSlider";
+import LocateControl from "../templates/LocationLocator";
+import "leaflet/dist/leaflet.css"; // Leaflet selbst zuerst laden!
 import L from "leaflet";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import "leaflet.locatecontrol"; 
+import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
+
 
 const TOOLBAR_HEIGHT = 64; // px
 
@@ -77,6 +82,67 @@ function MapWithLongClick() {
       clearTimeout(clickTimeout.current);
     }
   });
+
+  return null;
+}
+
+function LocateButton() {
+  const map = useMap();
+
+  const handleLocate = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation wird nicht unterstützt.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        map.flyTo([latitude, longitude], 13);
+      },
+      (error) => {
+        console.error("Fehler beim Abrufen der Geolocation:", error);
+      }
+    );
+  };
+
+  return (
+    <button
+      onClick={handleLocate}
+      style={{
+        position: "absolute",
+        bottom: "50px",
+        right: "10px",
+        zIndex: 1000,
+        padding: "8px 12px",
+        borderRadius: "8px",
+      }}
+    >
+      📍 Position
+    </button>
+  );
+}
+
+function ZoomToUserLocation() {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.warn("Geolocation wird nicht unterstützt");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log("Aktuelle Position:", latitude, longitude);
+        map.setView([latitude, longitude], 13); // Zoom-Level 13 = Stadtbereich
+      },
+      (error) => {
+        console.error("Fehler beim Abrufen der Geolocation:", error);
+      }
+    );
+  }, [map]);
 
   return null;
 }
@@ -165,13 +231,16 @@ function LocationApp() {
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <ZoomToUserLocation />
         {locations.map((loc, index) => (
           <Marker key={index} position={[loc.latitude, loc.longitude]}>
             <Popup>{loc.name}</Popup>
           </Marker>
         ))}
-         <MapWithLongClick />
-         <MapEventHandler />
+          { /* <LocateControl /> */ }
+          <LocateButton />
+          <MapWithLongClick />
+          <MapEventHandler />
       </MapContainer>
       <Box sx={{
         position: "absolute",
