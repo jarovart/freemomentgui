@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { useNavigate, useLocation } from "react-router-dom";
 import LocationDateSlider from "../templates/LocationDateSlider";
@@ -82,6 +82,8 @@ function MapWithLongClick() {
 }
 
 function LocationApp() {
+  // Flag, damit der erste Aufruf nur einmal passiert
+  const hasLoadedInitially = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [locations, setLocations] = useState([]);
@@ -113,27 +115,41 @@ function LocationApp() {
     });
   };
 
-    function MapEventHandler() {
+  function MapEventHandler() {
     const map = useMapEvents({
       moveend: async () => {
-        const bounds = map.getBounds();
-
-        const southWest = bounds.getSouthWest();
-        const northEast = bounds.getNorthEast();
-
-        // Anfrage an Spring Boot senden
-        const response = await fetch(
-          `http://localhost:8080/api/locations/within?minLat=${southWest.lat}&maxLat=${northEast.lat}&minLng=${southWest.lng}&maxLng=${northEast.lng}`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setLocations(data);
-        } else {
-          console.error("Fehler beim Laden der Locations");
-        }
+        await loadLocations();
       },
     });
+
+    async function loadLocations() {
+      if (!map) return;
+      const bounds = map.getBounds();
+
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+
+      // Anfrage an Spring Boot senden
+      const response = await fetch(
+        `http://localhost:8080/api/locations/within?minLat=${southWest.lat}&maxLat=${northEast.lat}&minLng=${southWest.lng}&maxLng=${northEast.lng}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setLocations(data);
+      } else {
+        console.error("Fehler beim Laden der Locations");
+      }
+    }
+
+
+    // 🔥 Beim ersten Rendern direkt laden:
+    useEffect(() => {    
+    if (!hasLoadedInitially.current) {
+      hasLoadedInitially.current = true;
+      loadLocations();
+    }
+    }, []); // nur 1x beim Start
 
     return null;
   }
