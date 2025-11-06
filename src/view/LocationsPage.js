@@ -24,10 +24,10 @@ export default function LocationsPage({ paramlocations }) {
           setLocations(data);
         })
         .catch((err) => console.error("❌ Fehler beim Laden:", err));
-      } else {
-        setLocations(paramlocations);
-      }
-    }, []); // <- leeres Array = nur einmal beim Laden der Seite
+    } else {
+      setLocations(paramlocations);
+    }
+  }, []); // <- leeres Array = nur einmal beim Laden der Seite
   
 
   return (
