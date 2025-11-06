@@ -5,55 +5,30 @@ import { LocationItem } from "../templates/LocationItem";
 import { useNavigate } from "react-router-dom";
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 
-const locations1 = [
-  {
-    id: 1,
-    name: "Marienplatz",
-    address: "Marienplatz 1, München",
-    date: "2025-04-22T00:00:00",
-    image: "/images/marienplatz.jpg"
-  },
-  {
-    id: 2,
-    name: "Brandenburger Tor",
-    address: "Pariser Platz, Berlin",
-    date: "2025-05-01T00:00:00",
-    image: "/images/brandenburger.jpg"
-  },  
-  {
-    id: 3,
-    name: "Marienplatz1",
-    address: "Marienplatz 1, München",
-    date: "2025-04-22T00:00:00",
-    image: "/images/marienplatz.jpg"
-  },
-  {
-    id: 4,
-    name: "Brandenburger Tor1",
-    address: "Pariser Platz, Berlin",
-    date: "2025-05-01T00:00:00",
-    imageUrl: "/images/brandenburger.jpg"
-  }
-];
-
-export default function LocationsPage({ locations2=locations1 }) {
+export default function LocationsPage({ paramlocations }) {
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   console.debug("Erfolgreich gespeichert:");
   // Anfrage an Spring Boot senden
-   useEffect(() => {
-    // Daten laden (einmal beim Mount)
-    fetch("http://localhost:8080/api/locations")
-      .then((res) => {
-        if (!res.ok) throw new Error("Server-Fehler " + res.status);
-        return res.json();
-      })
-      .then((data) => {
-        console.log("✅ Locations geladen:", data);
-        setLocations(data);
-      })
-      .catch((err) => console.error("❌ Fehler beim Laden:", err));
-  }, []); // <- leeres Array = nur einmal beim Laden der Seite
+    useEffect(() => {
+      
+      if(paramlocations == null || paramlocations.length == 0){
+      // Daten laden (einmal beim Mount)
+      fetch("http://localhost:8080/api/locations")
+        .then((res) => {
+          if (!res.ok) throw new Error("Server-Fehler " + res.status);
+          return res.json();
+        })
+        .then((data) => {
+          console.log("✅ Locations geladen:", data);
+          setLocations(data);
+        })
+        .catch((err) => console.error("❌ Fehler beim Laden:", err));
+      } else {
+        setLocations(paramlocations);
+      }
+    }, []); // <- leeres Array = nur einmal beim Laden der Seite
+  
 
   return (
     <Box
