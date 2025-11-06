@@ -14,23 +14,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import LoginModal from "../templates/LoginModal";
 
-const style = {
-  position: 'absolute',
-  top: '10%',
-  left: '10%',
-  width: '80%',
-  height: '80%',
-  backgroundColor: 'white',
-  borderRadius: '8px',
-  padding: '20px'
-};
-
-export default function CustomToolbar({ user, setUser }) {
+export default function CustomToolbar({ user1, setUser1 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isMainPage = location.pathname === "/";
 
@@ -90,18 +81,7 @@ export default function CustomToolbar({ user, setUser }) {
       )}
 
       {/* Login Modal */}
-      <Modal open={loginOpen} onClose={() => setLoginOpen(false)}>
-        <Box sx={style}>
-          <h2>Login</h2>
-          <p>(Username & Password Inputs hier)</p>
-          <Button variant="contained" onClick={() => {
-            setUser({ name: "Artem", image: "" });
-            setLoginOpen(false);
-          }}>Einloggen (Dummy)</Button>
-          <br /><br />
-          <Button variant="text">Passwort vergessen</Button>
-        </Box>
-      </Modal>
+      <LoginModal loginOpen={loginOpen} setLoginOpen={setLoginOpen} setUser={setUser} />
     </Box>
   );
 }

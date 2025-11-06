@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // Pfad anpassen
 import LocationDateSlider from "../templates/LocationDateSlider";
 import LocateControl from "../templates/LocationLocator";
 import "leaflet/dist/leaflet.css"; // Leaflet selbst zuerst laden!
@@ -43,12 +44,18 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapWithLongClick() {
+  const { user } = useAuth(); // <--- hier bekommst du den aktuellen User
   const navigate = useNavigate();
   const clickTimeout = useRef(null);
   const longPressDuration = 600; // ms (wie lange gedrückt halten = Long Click)
 
   function startListening(e){
     return setTimeout(() => {
+          if (!user) {
+            console.log("⚠️ Nicht eingeloggt! Navigation blockiert.");
+            //alert("Bitte logge dich ein, um eine Location zu erstellen.");
+            return; // Abbruch
+          }
           const { lat, lng } = e.latlng;
           console.log("Long click bei:", lat, lng);
           navigate(`/createlocationpage?lat=${lat}&lng=${lng}`);
@@ -266,38 +273,6 @@ function LocationApp() {
         <button onClick={addLocation}>Hinzufügen</button>
       </Box>
       <LocationDateSlider />
-      {/* Overlay: Slider unten */}
-      {/*<Box
-        sx={{
-          position: 'absolute',
-          bottom: '10px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          height: '10%',
-          backgroundColor: 'rgba(143, 143, 143, 0.7)',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: "10px",
-          width: "30%",
-          minWidth: "100px", // Lesbarkeit
-          minHeight: "70px", // Lesbarkeit
-          borderRadius: "12px",   // oder 8, 16 – Geschmackssache
-          zIndex: 1000,   // ✅ das ist neu!
-          padding: "6px 30px",
-          whiteSpace: "nowrap"
-        }}
-      >
-        <Slider
-          value={dateFilter}
-          min={0}
-          max={3}
-          step={1}
-          marks={marks}
-          onChange={(_, newValue) => setDateFilter(newValue)}
-          valueLabelDisplay="off"
-          //sx={{ left: '10%', width: '80%' }}
-        />
-      </Box>*/}
     </Box>
   );
 }
