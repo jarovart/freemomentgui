@@ -141,13 +141,26 @@ function ZoomToUserLocation() {
   }, [map]);
 
   return ( position && (
-            <CircleMarker
-              center={position}
-              radius={8}                  // Größe des Punktes
-              color="blue"                // Randfarbe
-              fillColor="blue"            // Füllfarbe
-              fillOpacity={0.7}           // Transparenz
-            />
+            <>
+              {/* Äußerer weißer Kreis */}
+              <CircleMarker
+                center={position}
+                radius={12}              // größer
+                color="white"
+                weight={2}
+                fillColor="white"
+                fillOpacity={0.3}        // halbtransparent
+              />
+              {/* Innerer blauer Punkt */}
+              <CircleMarker
+                center={position}
+                radius={8}
+                color="white"            // dünner weißer Rand
+                weight={2}
+                fillColor="blue"
+                fillOpacity={0.9}
+              />
+            </>
           )
     );
 }
