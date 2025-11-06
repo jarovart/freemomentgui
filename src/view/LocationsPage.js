@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LayoutSwitcher } from "../templates/LayoutSwitcher"
 import { LocationCard } from "../templates/LocationCard";
 import { LocationItem } from "../templates/LocationItem";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 
@@ -37,24 +36,24 @@ const locations1 = [
   }
 ];
 
-export default function LocationsPage({ locations=locations1 }) {
+export default function LocationsPage({ locations2=locations1 }) {
   const navigate = useNavigate();
+  const [locations, setLocations] = useState([]);
   console.debug("Erfolgreich gespeichert:");
-  fetch("http://localhost:8080/api/locations", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(locations1.at(0))
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Server-Fehler " + res.status);
-    return res.json();
-  })
-  .then(data => console.log("✅ Erfolgreich gespeichert:", data))
-  .catch(err => console.error("❌ Fehler:", err));
-  
-  const openLocation = (id) => {
-    navigate(`/location/${id}`);
-  };
+  // Anfrage an Spring Boot senden
+   useEffect(() => {
+    // Daten laden (einmal beim Mount)
+    fetch("http://localhost:8080/api/locations")
+      .then((res) => {
+        if (!res.ok) throw new Error("Server-Fehler " + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("✅ Locations geladen:", data);
+        setLocations(data);
+      })
+      .catch((err) => console.error("❌ Fehler beim Laden:", err));
+  }, []); // <- leeres Array = nur einmal beim Laden der Seite
 
   return (
     <Box
