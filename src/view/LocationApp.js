@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext"; // Pfad anpassen
 import LocationDateSlider from "../templates/LocationDateSlider";
 import LocateControl from "../templates/LocationLocator";
+import { useError } from "../ErrorContext";
 import "leaflet/dist/leaflet.css"; // Leaflet selbst zuerst laden!
 import L from "leaflet";
 import Slider from "@mui/material/Slider";
@@ -44,6 +45,7 @@ L.Icon.Default.mergeOptions({
 });
 
 function MapWithLongClick() {
+  const { showError } = useError();
   const { user } = useAuth(); // <--- hier bekommst du den aktuellen User
   const navigate = useNavigate();
   const clickTimeout = useRef(null);
@@ -53,7 +55,7 @@ function MapWithLongClick() {
     return setTimeout(() => {
           if (!user) {
             console.log("⚠️ Nicht eingeloggt! Navigation blockiert.");
-            //alert("Bitte logge dich ein, um eine Location zu erstellen.");
+            showError("Bitte logge dich ein, um eine Location zu erstellen.");
             return; // Abbruch
           }
           const { lat, lng } = e.latlng;
@@ -189,6 +191,7 @@ function LocationApp() {
   };
 
   function MapEventHandler() {
+    const { showError } = useError();
     const map = useMapEvents({
       moveend: async () => {
         await loadLocations();
@@ -202,18 +205,23 @@ function LocationApp() {
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
 
-      // Anfrage an Spring Boot senden
-      const response = await fetch(
-        `http://localhost:8080/api/locations/within?minLat=${southWest.lat}&maxLat=${northEast.lat}&minLng=${southWest.lng}&maxLng=${northEast.lng}`
-      );
+      try{
+        // Anfrage an Spring Boot senden
+        const response = await fetch(
+          `http://localhost:8080/api/locations/within?minLat=${southWest.lat}&maxLat=${northEast.lat}&minLng=${southWest.lng}&maxLng=${northEast.lng}`
+        );
 
-      if (response.ok) {
-        const data = await response.json();
-        setLocations(data);
-      } else {
-        console.error("Fehler beim Laden der Locations");
-      }
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data);
+        } else {
+          console.error("Fehler beim Laden der Locations");
+        }
+    } catch (err) {
+      console.error(err);
+      showError("Server is not reachable: "+err.message);
     }
+  }
 
 
     // 🔥 Beim ersten Rendern direkt laden:

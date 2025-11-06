@@ -10,6 +10,7 @@ import {
   Tab,
 } from "@mui/material";
 import { useAuth } from "../AuthContext"; // Pfad anpassen
+import { useError } from "../ErrorContext";
 
 const style = {
   position: "absolute",
@@ -44,6 +45,7 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { user, login } = useAuth(); // <--- hier bekommst du den aktuellen User
+  const { showError } = useError();
 
   const handleSubmit = async () => {
     setError("");
@@ -98,6 +100,7 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
     } catch (err) {
       console.error(err);
       setError("Serverfehler oder keine Verbindung");
+      showError("Serverfehler oder keine Verbindung: "+err.message);
     } finally {
       setLoading(false);
     }

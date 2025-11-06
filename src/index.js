@@ -10,6 +10,7 @@ import CreateLocationPage from "./view/CreateLocationPage";
 import LocationDetails from "./view/LocationDetails";
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "./AuthContext";
+import { ErrorProvider } from "./ErrorContext";
 
 import 'leaflet/dist/leaflet.css';
 import "./index.css";
@@ -22,14 +23,16 @@ function Root() {
       {/* Toolbar immer sichtbar */}
       <React.StrictMode>
         <AuthProvider>
-          <CustomToolbar />
-          <Routes>
-            <Route path="/" element={<LocationApp />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/locationspage" element={<LocationsPage />} />
-            <Route path="/createlocationpage" element={<CreateLocationPage />} />
-            <Route path="/location/:id" element={<LocationDetails />} />
-          </Routes>
+          <ErrorProvider>
+            <CustomToolbar />
+            <Routes>
+              <Route path="/" element={<LocationApp />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/locationspage" element={<LocationsPage />} />
+              <Route path="/createlocationpage" element={<CreateLocationPage />} />
+              <Route path="/location/:id" element={<LocationDetails />} />
+            </Routes>
+          </ErrorProvider>
         </AuthProvider>
       </React.StrictMode>
     </BrowserRouter>
