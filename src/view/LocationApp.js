@@ -1,19 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap, CircleMarker } from 'react-leaflet';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext"; // Pfad anpassen
 import LocationDateSlider from "../templates/LocationDateSlider";
-import LocateControl from "../templates/LocationLocator";
 import { useError } from "../ErrorContext";
 import "leaflet/dist/leaflet.css"; // Leaflet selbst zuerst laden!
 import L from "leaflet";
-import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import "leaflet.locatecontrol"; 
-import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
 
 
 const TOOLBAR_HEIGHT = 64; // px
@@ -35,14 +28,6 @@ function useLongPress(callback = () => {}, ms = 500) {
     onTouchEnd: clear,
   };
 }
-
-// Marker Fix
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
 
 function MapWithLongClick() {
   const { showError } = useError();
@@ -134,6 +119,7 @@ function LocateButton() {
 
 function ZoomToUserLocation() {
   const map = useMap();
+  const [position, setPosition] = useState(null);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -142,8 +128,9 @@ function ZoomToUserLocation() {
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setPosition([latitude, longitude]);
         console.log("Aktuelle Position:", latitude, longitude);
         map.setView([latitude, longitude], 13); // Zoom-Level 13 = Stadtbereich
       },
@@ -153,7 +140,16 @@ function ZoomToUserLocation() {
     );
   }, [map]);
 
-  return null;
+  return ( position && (
+            <CircleMarker
+              center={position}
+              radius={8}                  // Größe des Punktes
+              color="blue"                // Randfarbe
+              fillColor="blue"            // Füllfarbe
+              fillOpacity={0.7}           // Transparenz
+            />
+          )
+    );
 }
 
 function LocationApp() {
@@ -164,6 +160,7 @@ function LocationApp() {
   const [locations, setLocations] = useState([]);
   const [input, setInput] = useState("");
   const [dateFilter, setDateFilter] = useState(0);
+  const [position, setPosition] = useState(null);
 
   const addLocation = () => {
     if (!input.trim()) return;
@@ -252,7 +249,6 @@ function LocationApp() {
             <Popup>{loc.name}</Popup>
           </Marker>
         ))}
-          { /* <LocateControl /> */ }
           <LocateButton />
           <MapWithLongClick />
           <MapEventHandler />
