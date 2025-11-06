@@ -38,6 +38,7 @@ const styleOld = {
 
 export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
   const [activeTab, setActiveTab] = useState(0); // 0 = Login, 1 = Register
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,6 +51,11 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
   const handleSubmit = async () => {
     setError("");
     setSuccess("");
+
+    if(!email || email.indexOf("@") === -1){
+      setError("Bitte E-Mail eingeben.");
+      return;
+    }
 
     if (!username || !password) {
       setError("Bitte Benutzername und Passwort eingeben");
@@ -90,6 +96,7 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
           // ✅ Registrierung erfolgreich
           setSuccess("Registrierung erfolgreich! Du kannst dich jetzt einloggen.");
           setActiveTab(0);
+          setEmail("");
           setUsername("");
           setPassword("");
           setConfirmPassword("");
@@ -146,6 +153,14 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
 
         {activeTab === 1 && (
           <>
+            <TextField
+              fullWidth
+              label="E-Mail"
+              variant="outlined"
+              margin="dense"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <TextField
               fullWidth
               label="Benutzername"
