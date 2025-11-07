@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LocationApp from "./view/LocationApp";
 import CustomToolbar from "./view/Toolbar";
 import Profile from "./view/Profile";
+import TestingPage from "./view/TestingPage";
 import LocationsPage from "./view/LocationsPage";
 import CreateLocationPage from "./view/CreateLocationPage";
 import LocationDetails from "./view/LocationDetails";
@@ -31,6 +32,7 @@ function Root() {
               <Route path="/locationspage" element={<LocationsPage />} />
               <Route path="/createlocationpage" element={<CreateLocationPage />} />
               <Route path="/location/:id" element={<LocationDetails />} />
+              <Route path="/testingmenuentry" element={<TestingPage />} />
             </Routes>
           </ErrorProvider>
         </AuthProvider>

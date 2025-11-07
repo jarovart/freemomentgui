@@ -52,7 +52,7 @@ export default function LoginModal({ loginOpen, setLoginOpen, setUser }) {
     setError("");
     setSuccess("");
 
-    if(!email || email.indexOf("@") === -1){
+      if(activeTab !== 0 && (!email || email.indexOf("@") === -1)){
       setError("Bitte E-Mail eingeben.");
       return;
     }

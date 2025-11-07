@@ -15,7 +15,7 @@ export default function CreateLocationPage() {
     e.preventDefault();
     const location = {name, description, date, latitude, longitude };
 
-    const response = await fetch("http://localhost:8080/api/locations", {
+    const response = await fetch("http://localhost:8080/api/locations/createLocation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(location),
