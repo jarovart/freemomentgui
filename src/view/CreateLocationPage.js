@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useError } from "../ErrorContext";
 import { useState } from "react";
 
 export default function CreateLocationPage() {
@@ -6,6 +7,7 @@ export default function CreateLocationPage() {
   const query = new URLSearchParams(useLocation().search);
   const latitude = query.get("lat");
   const longitude = query.get("lng");
+    const { showError } = useError();
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -14,19 +16,36 @@ export default function CreateLocationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const location = {name, description, date, latitude, longitude };
+    const token = localStorage.getItem("token");
 
-    const response = await fetch("http://localhost:8080/api/locations/createLocation", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(location),
-    });
+    try {
+      const response = await fetch("http://localhost:8080/api/locations/createLocation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(location),
+      });
 
-    if (response.ok) {
-      alert("Location erstellt!"); 
+    
+      if (response.status === 401) {
+        showError("Nicht autorisiert. Bitte einloggen.");
+        return;
+      }
+
+      if (!response.ok) {
+        const text = await response.text();
+        showError("Fehler beim Erstellen: " + text);
+        return;
+      }
+
       const createdLocation = await response.json();
+      alert("Location erstellt!");
       navigate(`/location/${createdLocation.id}`, { state: createdLocation, replace: true });
-    } else {
-      alert("Fehler beim Erstellen!");
+
+    } catch (err) {
+      showError("Fehler: " + err.message);
     }
   };
 

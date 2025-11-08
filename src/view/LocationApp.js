@@ -6,10 +6,21 @@ import LocationDateSlider from "../templates/LocationDateSlider";
 import { useError } from "../ErrorContext";
 import "leaflet/dist/leaflet.css"; // Leaflet selbst zuerst laden!
 import L from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import Box from "@mui/material/Box";
 
 
 const TOOLBAR_HEIGHT = 64; // px
+
+// Marker Fix Icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 function useLongPress(callback = () => {}, ms = 500) {
   const timeout = useRef();
